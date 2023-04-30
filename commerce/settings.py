@@ -52,8 +52,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'commerce.urls'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 TEMPLATES = [
     {
@@ -133,4 +131,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'home/shen001/commerce-app/media/media'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'assets', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'assets', 'media', 'media/media')
