@@ -1,0 +1,84 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+{% if bidsuccess %}
+  <div class="alert alert-primary" role="alert">{{bidsuccess}}</div>
+{% endif %}
+{% if biderror %}
+  <div class="alert alert-danger" role="alert">{{biderror}}</div>
+{% endif %}
+
+
+<div class="d-flex flex-column">
+  <!-- <div class="d-flex flex-column"> -->
+
+  <!-- CLOSED LISTING -->
+    {% if won %}
+      <div class="alert alert-primary" role="alert">Auction closed. {{winmessage}}</div>
+    {% endif %}
+
+      <h2>Listing: {{listing.category}}</h2> <!-- Listing Category -->
+      <!-- CLOSE LISTING BUTTON -->
+      {% if closelistingbutton %}
+        <a href="{% url 'close_listing' listing.pk %}"><button class="btn btn-primary">Close Listing</button></a>
+      {% endif %}
+      
+    
+    <!-- WATCHLIST BUTTON -->
+      <form action="{% url 'add_to_watchlist' listing.pk %}" method="post">
+        {% csrf_token %}
+      {% if addedtowatchlist %}
+        <input class="btn btn-primary btn-xs" type="submit" name="removewatchlist" value=" Remove from Watchlist" />
+      {% else %}
+        <input class="btn btn-primary btn-xs" type="submit" name="addwatchlist" value="Add to Watchlist" />
+      {% endif %}
+      </form>
+      
+    <!-- LISTING INFORMATION   -->
+      <img src="{{ listing.get_photo_url }}" width="500" alt=""/>
+      <p>{{listing.title}}</p>
+      <h3>${{listing.start_amount}}</h3>
+
+    <!-- BIDDING FORM AVAILABLE IF LISTING IS STILL OPEN AND NO ONE HAS WON -->
+      {% if not won %}
+        <p>{{bidcount}} bid(s) so far. {{viewmessage}}</p>
+        <form action="{% url 'bid_listing' listing.pk %}" method="POST"> 
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input class="btn btn-primary" type="submit" name="bidamount" value="Place Bid" />  
+        </form> 
+      {% endif %}
+
+    <h3>Details</h3>
+    <ul>
+      <li>Info: {{listing.description}}</li>
+      <li>Category: {{listing.category}} </li>
+      <li>Listed by: <span>{{listing.seller}}</span></li>
+      <li>Created {{ listing.date_added }}</li>
+    </ul>
+
+    <!-- COMMENTS SECTION -->
+    <h2>Comments</h2>
+    
+      {% for comment in comments %}
+        <ul class="comments">
+          <li><span class="commentby">{{comment.commented_by}}</span></li>
+          <li><span>{{comment.comment}}</span></li>
+          <li><span class="date-added">{{comment.date_added}}</span></li>
+        </ul>
+      {% endfor %}
+
+
+    <!-- COMMENT FORM AVAILABLE WHEN NO ONE HAS WON -->
+    {% if not won %}
+      <form action="{% url 'comment' listing.pk %}" method="POST"> 
+        {% csrf_token %}
+        {{commentForm.as_p}}
+        <input class="btn btn-primary" type="submit" name="listcomments" value="Post" />  
+      </form> 
+    {% endif %}
+    <!-- </div> -->
+  </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div class="container">
+    {% if categorylist %}
+        <h2>{{category}}</h2>
+    {% elif bids%}
+        <h2>Bids</h2>
+    {% elif watchlist%}
+        <h2>Watchlists</h2>
+    {% else %}
+        <h2>Active Listings</h2>
+    {% endif %}
+        <ul class="list-group">
+            {% for listing in listings %}
+            <a href="{% url 'view_listing' listing.pk %}" ">
+                <li class="list-group-item list-group-item-action d-flex flex-row">
+
+                    <div class="d-flex flex-column">
+                        <img class="rounded" src="{{ listing.get_photo_url }}" height="200" width="200" height=auto alt=""/>
+                     
+                    </div><div class="d-flex flex-column">  
+                    <div class="col-container">
+                        <div class="title">{{listing.title}}</div>
+                            <span class="price">Price: </span>${{listing.start_amount}}
+                            <div class="date-added">created {{ listing.date_added }}
+                        </div>
+                    </div>
+                    </div>  
+                </li>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

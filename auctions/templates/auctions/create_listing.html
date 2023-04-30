@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Create Listing</h2>
+<div class="myForm">
+    <!-- enctype="multipart/form-data - encoding type that allows files to be sent through a POST -->
+    <form name="create" method="POST" enctype="multipart/form-data"> 
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.as_p  }}
+        </div>
+        <input class="btn btn-primary" type="submit" name= "create" value="Submit" />  
+    </form> 
+</div>
+ 
+{% endblock %}
